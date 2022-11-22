@@ -43,10 +43,10 @@ namespace IdentityServer.IdentityServer4Configuration
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
                 options.EmitStaticAudienceClaim = true;
-            }).AddInMemoryClients(Clients.ApiClient)
-                .AddInMemoryIdentityResources(Clients.IdentityResources)
-                .AddInMemoryApiScopes(Clients.ApiScopes)
-                .AddInMemoryApiResources(Clients.ApiResources)
+            }).AddInMemoryClients(IDentityConfig.ApiClients)
+                .AddInMemoryIdentityResources(IDentityConfig.IdentityResources)
+                .AddInMemoryApiScopes(IDentityConfig.ApiScopes)
+                .AddInMemoryApiResources(IDentityConfig.ApiResources)
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString,

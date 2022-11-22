@@ -1,4 +1,5 @@
 using IdentityServer.DataBaseConfiguration;
+using IdentityServer.Helper;
 using IdentityServer.IdentityServer4Configuration;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Serilog;
@@ -15,7 +16,8 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.AddControllers();
 builder.Services.AddIDentityDataBaseConfiguration(configuration)
-    .AddIdentityServerV4(configuration);
+    .AddIdentityServerV4(configuration)
+    .AddServiers();
 
 
 var app = builder.Build();

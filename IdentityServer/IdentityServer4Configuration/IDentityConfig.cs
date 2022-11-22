@@ -5,7 +5,7 @@ using SharedLogic.IdentityServer;
 
 namespace IdentityServer.IdentityServer4Configuration
 {
-    public class Clients
+    public class IDentityConfig
     {
         internal static IEnumerable<IdentityResource> IdentityResources =>
             new List<IdentityResource>()
@@ -78,7 +78,7 @@ namespace IdentityServer.IdentityServer4Configuration
             };
 
 
-        internal static IEnumerable<Client> ApiClient =>
+        internal static IEnumerable<Client> ApiClients =>
             new List<Client>()
             {
                 new Client

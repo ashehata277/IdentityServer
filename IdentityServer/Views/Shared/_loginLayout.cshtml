@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/css/select2.css" rel="stylesheet" />
+
+</head>
+<body>
+    <header class="header-border">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link btn-buttons-header" asp-controller="Home" asp-action="Index">
+                                <div class="btn btn-toolbar">Home</div>
+                            </a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link btn-buttons-header" asp-action="Logout" asp-controller="Account" asp-route-Logout="">
+                                    <div class="btn btn-toolbar">@User.Identity.Name Logout</div>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link btn-buttons-header" asp-controller="Account" asp-action="Login" asp-route-returnUrl="">
+                                    <div class="btn btn-toolbar">Login</div>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/js/select2.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

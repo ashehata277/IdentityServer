@@ -11,9 +11,9 @@ namespace IdentityServer.IdentityServer4Configuration
 {
     public class Profile : IProfileService
     {
-        public async  Task GetProfileDataAsync(ProfileDataRequestContext context)
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            if (context.Client.ClientId == IDentityConstants.MobileClientId) 
+            if (context.Client.ClientId == IDentityConstants.MobileClientId)
             {
 
             }
