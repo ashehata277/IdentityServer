@@ -17,7 +17,7 @@
             Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
             <span>@Model.ClientName</span> application.
         </div>
-        <input type="hidden" value="@Model.PostLogoutRedirectUri" class="posturl" name="postulr" />
+        <input type="hidden" value="@Model.PostLogoutRedirectUri" class="posturl" id="posturl" name="postulr" />
     }
 
     @if (Model.SignOutIframeUrl != null)
