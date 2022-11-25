@@ -46,6 +46,7 @@ namespace Talabatk.IDS.Controllers.Account
 
         public async Task<IActionResult> Login(string returnUrl)
         {
+            ModelState.Clear(); 
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
@@ -55,7 +56,6 @@ namespace Talabatk.IDS.Controllers.Account
                 return RedirectToAction("Challenge", "External", new { scheme = vm.ExternalLoginScheme, returnUrl });
             }
             ViewData["Title"] = "Login";
-
             return View(vm);
         }
 
