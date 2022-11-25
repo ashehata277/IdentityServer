@@ -29,6 +29,7 @@ namespace SharedLogic.IdentityServer
         public static readonly string RoleClaim = "role";
         public static readonly string UserNameClaim = "username";
         public static readonly string UserIdClaim = "sub";
+        public static readonly string ClientTypeClaim = "ClientType";
 
 
         //-------------------- Scopes---------------------------------------------
@@ -46,6 +47,8 @@ namespace SharedLogic.IdentityServer
         public static readonly string AngularClientId = "8a2fd0e6-4c13-4581-84f0-e279ec81a2c5";
         public static readonly string AngularClientName = "Angular-Client";
         public static readonly string AngularClientSecret = "a2068121-2c4a-479a-9cc2-4b9d0dc11efd";
+        public static readonly string AngularClientType = "Angular";
+
 
 
 

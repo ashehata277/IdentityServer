@@ -44,6 +44,7 @@ namespace IdentityServer.IdentityServer4Configuration
 
                 claims.Add(new Claim(IDentityConstants.UserNameClaim, user.UserName ?? ""));
                 claims.Add(new Claim(IDentityConstants.UserIdClaim, user.Id?.ToString() ?? ""));
+                claims.Add(new Claim(IDentityConstants.ClientTypeClaim, IDentityConstants.AngularClientType));
                 foreach (var userRole in userRoleList)
                 {
                     claims.Add(new Claim(IDentityConstants.RoleClaim, userRole?.ToString() ?? ""));
