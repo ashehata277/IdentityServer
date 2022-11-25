@@ -19,17 +19,35 @@ using System.Threading.Tasks;
 
 namespace IdentityServer.IdentityServer4Configuration
 {
-    public static class ServiceConfiguration
+    public static class IdentityServices
     {
         public static IServiceCollection AddIdentityServerV4(this IServiceCollection services,
                                                              IConfiguration configuration,
                                                              IWebHostEnvironment env)
         {
-            services.AddIdentity<User, Role>()
-                .AddRoles<Role>()
-                .AddEntityFrameworkStores<IdentityContext>()
-                .AddDefaultTokenProviders()
-                .AddSignInManager();
+            services.AddIdentity<User, Role>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders()
+            .AddSignInManager();
 
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
@@ -60,15 +78,33 @@ namespace IdentityServer.IdentityServer4Configuration
                .AddProfileService<Profile>();
 
             #region Certifcate
-            X509Certificate2 cert = null;
-            var certificateThumbprint = configuration["CertificateThumbprint"];
 
+
+            AddSigninCredenticals(services, configuration, env, builder);
+            #endregion
+
+            ConfigureAuthorityOfIDSasClientCookieAndJWT(services, configuration);
+            services.AddLocalApiAuthentication();
+
+            ConfigureAPIReturnsUnAuthorize(services);
+
+            return services;
+        }
+
+        private static void AddSigninCredenticals(
+            IServiceCollection services,
+            IConfiguration configuration,
+            IWebHostEnvironment env,
+            IIdentityServerBuilder builder)
+        {
             if (env.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();
             }
-            else 
+            else
             {
+                X509Certificate2 cert = null;
+                var certificateThumbprint = configuration["CertificateThumbprint"];
                 using (X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
                 {
                     store.Open(OpenFlags.MaxAllowed);
@@ -109,9 +145,32 @@ namespace IdentityServer.IdentityServer4Configuration
 
 
             }
-            #endregion
+        }
 
+        private static void ConfigureAPIReturnsUnAuthorize(IServiceCollection services)
+        {
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/Account/Login");
+                options.LogoutPath = new PathString("/Account/Logout");
 
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    if (context.Request.Path.StartsWithSegments("/api")
+                        && context.Response.StatusCode == StatusCodes.Status200OK)
+                    {
+                        context.Response.Clear();
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    }
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
+            });
+        }
+
+        private static void ConfigureAuthorityOfIDSasClientCookieAndJWT(IServiceCollection services, IConfiguration configuration)
+        {
             var authorityOfMySelf = configuration.GetValue<string>("Authority");
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -153,50 +212,6 @@ namespace IdentityServer.IdentityServer4Configuration
                      }
                  };
              });
-            services.AddLocalApiAuthentication();
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings.
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 0;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = true;
-            });
-
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = new PathString("/Account/Login");
-                options.LogoutPath = new PathString("/Account/Logout");
-
-                options.Events.OnRedirectToLogin = context =>
-                {
-                    if (context.Request.Path.StartsWithSegments("/api")
-                        && context.Response.StatusCode == StatusCodes.Status200OK)
-                    {
-                        context.Response.Clear();
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        return Task.CompletedTask;
-                    }
-                    context.Response.Redirect(context.RedirectUri);
-                    return Task.CompletedTask;
-                };
-            });
-
-            return services;
         }
     }
 }
