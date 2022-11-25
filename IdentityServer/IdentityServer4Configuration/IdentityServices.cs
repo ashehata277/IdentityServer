@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Validation;
+﻿using IdentityServer4;
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
@@ -28,13 +29,14 @@ namespace IdentityServer.IdentityServer4Configuration
         {
             services.AddIdentity<User, Role>(options =>
             {
+
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 0;
-                
+
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -188,13 +190,17 @@ namespace IdentityServer.IdentityServer4Configuration
                  options.TokenValidationParameters =
                  new TokenValidationParameters
                  {
+                     ValidAudiences = new List<string> 
+                     {
+                         IdentityServerConstants.LocalApi.ScopeName
+                     },
                      LifetimeValidator = (_, expires, __, ___) => expires > DateTime.UtcNow,
-                     ValidateAudience = false,
+                     ValidateAudience = true,
                      ValidateIssuer = true,
                      ValidateActor = false,
                      ValidateLifetime = true,
-                     NameClaimType = "name",
-                     RoleClaimType = "role"
+                     NameClaimType = IDentityConstants.NameClaim,
+                     RoleClaimType = IDentityConstants.RoleClaim
                  };
                  options.Events = new JwtBearerEvents
                  {

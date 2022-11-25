@@ -14,10 +14,10 @@ namespace SharedLogic.IdentityServer
         public static readonly string ApiResource= "Api";
         public static readonly string MVCResource= "MVC";
         public static readonly string AdminUserName= "admin";
+        public static readonly string AdminPassword = "admin";
         public static readonly string AdminUserId= "32efec81-d676-4e7a-b3c1-12984c515bf2";
         public static readonly string AdminRoleName= "admin";
         public static readonly string AdminRoleId = "8ce88938-6386-40ce-ab79-16306e3991a8";
-        public static readonly string AdminPassword = "88c71d0e-2627-481c-9112-639670797F93";
         public static readonly string  AdminPhoneNumber= "admin";
         public static readonly string  AdminPhoneEmail= "admin@admin.com";
         public static readonly string  TokenInfo_Name= "username";
@@ -28,6 +28,7 @@ namespace SharedLogic.IdentityServer
         //-------------------Claims--------------------------------
         public static readonly string RoleClaim = "role";
         public static readonly string UserNameClaim = "username";
+        public static readonly string NameClaim = "name";
         public static readonly string UserIdClaim = "sub";
         public static readonly string ClientTypeClaim = "ClientType";
 

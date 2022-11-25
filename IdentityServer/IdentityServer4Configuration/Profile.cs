@@ -42,13 +42,14 @@ namespace IdentityServer.IdentityServer4Configuration
 
                 var claims = new List<Claim>();
 
-                claims.Add(new Claim(IDentityConstants.UserNameClaim, user.UserName ?? ""));
-                claims.Add(new Claim(IDentityConstants.UserIdClaim, user.Id?.ToString() ?? ""));
+                claims.Add(new Claim(IDentityConstants.UserNameClaim, user.UserName ?? string.Empty));
+                claims.Add(new Claim(IDentityConstants.UserIdClaim, user.Id?.ToString() ?? string.Empty));
                 claims.Add(new Claim(IDentityConstants.ClientTypeClaim, IDentityConstants.AngularClientType));
                 foreach (var userRole in userRoleList)
                 {
-                    claims.Add(new Claim(IDentityConstants.RoleClaim, userRole?.ToString() ?? ""));
+                    claims.Add(new Claim(IDentityConstants.RoleClaim, userRole?.ToString() ?? string.Empty));
                 }
+                context.IssuedClaims = claims;
 
             }
         }
