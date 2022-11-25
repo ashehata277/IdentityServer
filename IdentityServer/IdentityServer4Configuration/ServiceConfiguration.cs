@@ -22,11 +22,12 @@ namespace IdentityServer.IdentityServer4Configuration
     public static class ServiceConfiguration
     {
         public static IServiceCollection AddIdentityServerV4(this IServiceCollection services,
-                                                             IConfiguration configuration)
+                                                             IConfiguration configuration,
+                                                             IWebHostEnvironment env)
         {
             services.AddIdentity<User, Role>()
                 .AddRoles<Role>()
-                .AddEntityFrameworkStores<SharedContext>()
+                .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders()
                 .AddSignInManager();
 
@@ -34,7 +35,7 @@ namespace IdentityServer.IdentityServer4Configuration
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 
-            var migrationsAssembly = typeof(SharedContext).GetTypeInfo().Assembly.GetName().Name;
+            var migrationsAssembly = typeof(IdentityContext).GetTypeInfo().Assembly.GetName().Name;
             var connectionString = configuration.GetConnectionString("Default");
             var builder = services.AddIdentityServer(options =>
             {
@@ -59,56 +60,55 @@ namespace IdentityServer.IdentityServer4Configuration
                .AddProfileService<Profile>();
 
             #region Certifcate
-            //X509Certificate2 cert = null;
-            //var certificateThumbprint = configuration["CertificateThumbprint"];
+            X509Certificate2 cert = null;
+            var certificateThumbprint = configuration["CertificateThumbprint"];
+
+            if (env.IsDevelopment())
+            {
+                builder.AddDeveloperSigningCredential();
+            }
+            else 
+            {
+                using (X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+                {
+                    store.Open(OpenFlags.MaxAllowed);
+                    var certs = store.Certificates.Find(X509FindType.FindByThumbprint, certificateThumbprint, false);
+
+                    if (certs.Count > 0)
+                    {
+                        try
+                        {
+                            //check if system user can read cert private key
+                            if (certs[0].PrivateKey != null)
+                            {
+                                cert = certs[0];
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            //fall back to read cert from file
+                        }
+                    }
+                    store.Close();
+                }
+                if (cert == null)
+                {
+                    var filePath = Path.Combine(AppContext.BaseDirectory, "identity.pfx");
+                    cert = new X509Certificate2(filePath, "identity", X509KeyStorageFlags.MachineKeySet);
+
+                }
+
+                services.AddDataProtection()
+                        .SetApplicationName("identity")
+                        .PersistKeysToFileSystem(new DirectoryInfo($@"{Path.GetFullPath(Path.Combine(env.ContentRootPath, @"..\keys"))}"));
+                if (cert == null)
+                    throw new Exception("need to configure key material");
+                else
+                    builder.AddSigningCredential(cert)
+                           .AddValidationKey(cert);
 
 
-            //using (X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
-            //{
-            //    store.Open(OpenFlags.MaxAllowed);
-            //    var certs = store.Certificates.Find(X509FindType.FindByThumbprint, certificateThumbprint, false);
-
-            //    if (certs.Count > 0)
-            //    {
-            //        try
-            //        {
-            //            //check if system user can read cert private key
-            //            if (certs[0].PrivateKey != null)
-            //            {
-            //                cert = certs[0];
-            //            }
-            //        }
-            //        catch (Exception)
-            //        {
-            //            //fall back to read cert from file
-            //        }
-            //    }
-            //    store.Close();
-            //}
-            //if (cert == null)
-            //{
-            //    var filePath = Path.Combine(AppContext.BaseDirectory, "8orders.pfx");
-            //    cert = new X509Certificate2(filePath, "8orders8orders", X509KeyStorageFlags.MachineKeySet);
-
-            //}
-
-            //services.AddDataProtection()
-            //        .SetApplicationName("8Orders")
-            //        .PersistKeysToFileSystem(new DirectoryInfo($@"{Path.GetFullPath(Path.Combine(env.ContentRootPath, @"..\keys"))}"));
-
-
-            //if (env.IsDevelopment())
-            //{
-            //    builder.AddDeveloperSigningCredential();
-            //}
-            //else
-            //{
-            //    if (cert == null)
-            //        throw new Exception("need to configure key material");
-            //    else
-            //        builder.AddSigningCredential(cert)
-            //               .AddValidationKey(cert);
-            //}
+            }
             #endregion
 
 

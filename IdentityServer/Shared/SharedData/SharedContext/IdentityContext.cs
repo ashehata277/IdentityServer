@@ -4,7 +4,7 @@ using SharedLogic.IdentityServer;
 
 namespace SharedData
 {
-    public class SharedContext :
+    public class IdentityContext :
         IdentityDbContext<User,
         Role,
         string,
@@ -12,11 +12,17 @@ namespace SharedData
         UserRole,
         UserLogin,
         RoleClaim,
-        UserToken>
+        UserToken>,IDisposable
     {
-        public SharedContext(DbContextOptions<SharedContext> options) : base(options)
+        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
 
+        }
+
+
+        public override void Dispose()
+        {
+            base.Dispose();
         }
     }
 }

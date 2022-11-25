@@ -13,23 +13,28 @@ Log.Logger = new LoggerConfiguration()
                           .CreateLogger();
 
 
-
-builder.Services.AddControllers();
-builder.Services.AddIDentityDataBaseConfiguration(configuration)
-    .AddIdentityServerV4(configuration)
-    .AddServiers();
+string AllowedOrigins = IDentityAppSettings.AllowCors;
+IWebHostEnvironment env = builder.Environment;
+builder.Services
+    .InitializeConfiguration(configuration)
+    .AddIDentityDataBaseConfiguration(configuration)
+    .AddIdentityServerV4(configuration, env)
+    .AddServiers()
+    .AddCORS(configuration,AllowedOrigins)
+    .AddControllers();
 
 
 var app = builder.Build();
 
 app.MigrateContexts();
 
-
 if (!WindowsServiceHelpers.IsWindowsService())
     app.UseHttpsRedirection();
+app.UseAdminUser();
 app.UseStaticFiles();
-app.UseCors();
+app.UseCors(AllowedOrigins);
 app.UseRouting();
+app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>

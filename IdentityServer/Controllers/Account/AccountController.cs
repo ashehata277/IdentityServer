@@ -39,7 +39,6 @@ namespace Talabatk.IDS.Controllers.Account
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
-            this.config = config;
         }
 
 

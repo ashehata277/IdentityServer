@@ -10,7 +10,7 @@ using SharedData;
 
 namespace SharedData.Migrations
 {
-    [DbContext(typeof(SharedContext))]
+    [DbContext(typeof(IdentityContext))]
     partial class SharedContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

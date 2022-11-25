@@ -39,7 +39,8 @@ namespace IdentityServer.IdentityServer4Configuration
                     Scopes=new List<string>
                     {
                           IdentityServerConstants.StandardScopes.OpenId,
-                          IdentityServerConstants.LocalApi.ScopeName
+                          IdentityServerConstants.LocalApi.ScopeName,
+                          IDentityConstants.AngularApiScope
                     },
                     ApiSecrets = new List<Secret>(){new Secret(IDentityConstants.ApiResourceSecret.Sha256()) },
                 },
@@ -75,6 +76,7 @@ namespace IdentityServer.IdentityServer4Configuration
             new List<ApiScope>()
             {
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
+                new ApiScope(IDentityConstants.AngularApiScope),
             };
 
 
@@ -101,7 +103,37 @@ namespace IdentityServer.IdentityServer4Configuration
 
                         },
                         RefreshTokenUsage= TokenUsage.OneTimeOnly,
-                }
+                },
+                new Client
+                {
+                      ClientId = IDentityConstants.AngularClientId,
+                      ClientName = IDentityConstants.AngularClientName,
+                      ClientSecrets = { new Secret(IDentityConstants.AngularClientSecret.Sha256()) },
+                      AllowOfflineAccess = true,
+                      AccessTokenLifetime = IDentityConstants.TokenLifeTime,
+                      UpdateAccessTokenClaimsOnRefresh =true,
+                      AllowedGrantTypes = GrantTypes.Code,
+                      RefreshTokenExpiration = TokenExpiration.Absolute,
+                      AbsoluteRefreshTokenLifetime =  IDentityConstants.RefreshTokenLifeTime ,
+                      AllowedScopes =
+                      {
+                          IdentityServerConstants.LocalApi.ScopeName,
+                          IdentityServerConstants.StandardScopes.OpenId,
+                          IdentityServerConstants.StandardScopes.Profile,
+                          IDentityConstants.AngularApiScope,
+                          IdentityServerConstants.StandardScopes.OfflineAccess,
+
+                      },
+                      RefreshTokenUsage= TokenUsage.OneTimeOnly,
+                      RedirectUris = IDentityAppSettings.AngularClient_RedirectUris,
+                      RequirePkce = true,
+                      AllowAccessTokensViaBrowser = true,
+                      AllowedCorsOrigins = IDentityAppSettings.AngularClient_CORS,
+                      RequireClientSecret = false,
+                      PostLogoutRedirectUris =IDentityAppSettings.AngularClient_PostLogoutRedirectUris,
+                      RequireConsent = false,
+                },
+
             };
     }
 }

@@ -11,7 +11,7 @@ using SharedData;
 
 namespace SharedData.Migrations
 {
-    [DbContext(typeof(SharedContext))]
+    [DbContext(typeof(IdentityContext))]
     [Migration("20221121215244_IDentityDB_Init_Tables")]
     partial class IDentityDB_Init_Tables
     {

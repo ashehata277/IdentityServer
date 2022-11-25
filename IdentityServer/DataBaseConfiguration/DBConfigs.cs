@@ -9,7 +9,7 @@ namespace IdentityServer.DataBaseConfiguration
         public static IServiceCollection AddIDentityDataBaseConfiguration(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDbContext<SharedContext>(options =>
+            services.AddDbContext<IdentityContext>(options =>
             {
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 options.UseSqlServer(configuration.GetConnectionString("Default"))
@@ -24,7 +24,7 @@ namespace IdentityServer.DataBaseConfiguration
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetRequiredService<SharedContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetRequiredService<IdentityContext>().Database.Migrate();
 
             }
         }
