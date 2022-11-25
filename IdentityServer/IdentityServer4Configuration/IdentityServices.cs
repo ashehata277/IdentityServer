@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using IdentityServer4.Validation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ namespace IdentityServer.IdentityServer4Configuration
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 0;
+                
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -77,11 +79,9 @@ namespace IdentityServer.IdentityServer4Configuration
                .AddResourceOwnerValidator<ResourceOwnerValidator>()
                .AddProfileService<Profile>();
 
-            #region Certifcate
 
 
             AddSigninCredenticals(services, configuration, env, builder);
-            #endregion
 
             ConfigureAuthorityOfIDSasClientCookieAndJWT(services, configuration);
             services.AddLocalApiAuthentication();

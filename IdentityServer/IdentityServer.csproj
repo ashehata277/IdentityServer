@@ -32,6 +32,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,7 @@
 
   <ItemGroup>
     <ProjectReference Include="Shared\SharedData\SharedData.csproj" />
+    <ProjectReference Include="Shared\SharedWeb\SharedWeb.csproj" />
   </ItemGroup>
 
 </Project>

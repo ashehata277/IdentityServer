@@ -7,10 +7,14 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
-Log.Logger = new LoggerConfiguration()
-                          .ReadFrom.Configuration(configuration)
-                          .WriteTo.Console()
-                          .CreateLogger();
+builder.WebHost.UseSerilog((provider, loggerConfig) =>
+    {
+        loggerConfig.ReadFrom
+        .Configuration(configuration)
+        .WriteTo
+        .Console();
+
+    });
 
 
 string AllowedOrigins = IDentityAppSettings.AllowCors;
@@ -20,7 +24,8 @@ builder.Services
     .AddIDentityDataBaseConfiguration(configuration)
     .AddIdentityServerV4(configuration, env)
     .AddServiers()
-    .AddCORS(configuration,AllowedOrigins)
+    .AddCORS(configuration, AllowedOrigins)
+    .AddLocalization()
     .AddControllers();
 
 
@@ -33,6 +38,7 @@ if (!WindowsServiceHelpers.IsWindowsService())
 app.UseAdminUser();
 app.UseStaticFiles();
 app.UseCors(AllowedOrigins);
+app.UseLocalization();
 app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthentication();

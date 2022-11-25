@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace IdentityServer.Helper.TaskExtension
 {
