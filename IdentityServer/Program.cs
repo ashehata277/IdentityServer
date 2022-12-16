@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting.WindowsServices;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//develop
 ConfigurationManager configuration = builder.Configuration;
 builder.WebHost.UseSerilog((provider, loggerConfig) =>
     {
