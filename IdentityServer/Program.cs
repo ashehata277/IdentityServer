@@ -1,8 +1,11 @@
+using Hellang.Middleware.ProblemDetails;
+using Hellang.Middleware.ProblemDetails.Mvc;
 using IdentityServer.DataBaseConfiguration;
 using IdentityServer.Helper;
 using IdentityServer.IdentityServer4Configuration;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Serilog;
+using SharedWeb.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,13 +29,14 @@ builder.Services
     .AddServiers()
     .AddCORS(configuration, AllowedOrigins)
     .AddLocalization()
+    .AddApiProblemDetails()
     .AddControllers();
 
 
 var app = builder.Build();
 
 app.MigrateContexts();
-
+app.UseProblemDetails();
 if (!WindowsServiceHelpers.IsWindowsService())
     app.UseHttpsRedirection();
 app.UseAdminUser();
