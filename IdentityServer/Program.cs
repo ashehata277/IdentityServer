@@ -3,6 +3,7 @@ using Hellang.Middleware.ProblemDetails.Mvc;
 using IdentityServer.DataBaseConfiguration;
 using IdentityServer.Helper;
 using IdentityServer.IdentityServer4Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Serilog;
 using SharedWeb.Helpers;
@@ -17,26 +18,30 @@ builder.WebHost.UseSerilog((provider, loggerConfig) =>
         .WriteTo
         .Console();
 
-    });
+    }); 
 
 
 string AllowedOrigins = IDentityAppSettings.AllowCors;
 IWebHostEnvironment env = builder.Environment;
 builder.Services
     .InitializeConfiguration(configuration)
+    .AddMediatorSourceGenerator()
     .AddIDentityDataBaseConfiguration(configuration)
     .AddIdentityServerV4(configuration, env)
     .AddServiers()
+    .AddAuthSwagger()
     .AddCORS(configuration, AllowedOrigins)
     .AddLocalization()
     .AddApiProblemDetails()
-    .AddControllers();
+    .AddControllersWithViews()
+    .AddNewtonsoftJson();
 
 
 var app = builder.Build();
 
 app.MigrateContexts();
 app.UseProblemDetails();
+app.UseAuthSwagger();
 if (!WindowsServiceHelpers.IsWindowsService())
     app.UseHttpsRedirection();
 app.UseAdminUser();
@@ -52,6 +57,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller}/{action}",
-        defaults: new { controller = "Home", action = "Index" });
+        defaults: new { controller = "Home",Action = "Index"});
 });
 app.Run();

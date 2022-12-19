@@ -23,6 +23,7 @@ namespace SharedLogic.IdentityServer
         public static readonly string  TokenInfo_Name= "username";
         public static readonly string  TokenInfo_AuthenticationMethod= "custom";
         public static readonly string TokenInfo_IdentityProvider = "local";
+        public static readonly string SecurityStamp = "SecurityStamp";
 
 
         //-------------------Claims--------------------------------
@@ -35,6 +36,7 @@ namespace SharedLogic.IdentityServer
 
         //-------------------- Scopes---------------------------------------------
         public static readonly string AngularApiScope = "Angular-Client-Scope";
+        public static readonly string SwaggerScope = "swagger-Client-Scope";
 
         //-------------------- mobile Client ----------------------------------------
         public static readonly string MobileClientSecret= "83906b4d-72b6-4acf-9a6d-cdcf546c3f33";
@@ -50,6 +52,11 @@ namespace SharedLogic.IdentityServer
         public static readonly string AngularClientSecret = "a2068121-2c4a-479a-9cc2-4b9d0dc11efd";
         public static readonly string AngularClientType = "Angular";
 
+
+        //--------------------------swagger client ---------------------------------------------
+        public static readonly string SwaggerClientId = "5754f3b1-38ef-4f2f-9ee6-7b9d36066af2";
+        public static readonly string SwaggerClientSecret = "e4ca12d6-57ee-4a57-826b-f07bda32c879";
+        public static readonly string SwaggerClientName = "swagger";
 
 
 

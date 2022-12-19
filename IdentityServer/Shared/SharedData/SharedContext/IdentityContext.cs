@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SharedApplication.ContextInterfaces;
 using SharedLogic.IdentityServer;
 
 namespace SharedData
@@ -12,13 +13,14 @@ namespace SharedData
         UserRole,
         UserLogin,
         RoleClaim,
-        UserToken>,IDisposable
+        UserToken>,IDisposable , IIDentityContext
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
 
         }
 
+        public DbSet<User> User { get => this.Users; }
 
         public override void Dispose()
         {

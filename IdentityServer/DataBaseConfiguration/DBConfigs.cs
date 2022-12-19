@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using SharedApplication.ContextInterfaces;
 using SharedData;
 
 namespace IdentityServer.DataBaseConfiguration
@@ -15,6 +16,7 @@ namespace IdentityServer.DataBaseConfiguration
                 options.UseSqlServer(configuration.GetConnectionString("Default"))
                        .EnableSensitiveDataLogging();
             });
+            services.AddScoped<IIDentityContext, IdentityContext>();
             return services;
         }
 

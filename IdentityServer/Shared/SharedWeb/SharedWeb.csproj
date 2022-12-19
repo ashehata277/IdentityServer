@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SharedServices\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.18.2" />
   </ItemGroup>
 
 </Project>

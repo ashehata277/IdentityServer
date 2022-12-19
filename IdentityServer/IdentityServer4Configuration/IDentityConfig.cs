@@ -40,7 +40,9 @@ namespace IdentityServer.IdentityServer4Configuration
                     {
                           IdentityServerConstants.StandardScopes.OpenId,
                           IdentityServerConstants.LocalApi.ScopeName,
-                          IDentityConstants.AngularApiScope
+                          IDentityConstants.AngularApiScope,
+                          IDentityConstants.SwaggerScope
+
                     },
                     ApiSecrets = new List<Secret>(){new Secret(IDentityConstants.ApiResourceSecret.Sha256()) },
                 },
@@ -77,6 +79,7 @@ namespace IdentityServer.IdentityServer4Configuration
             {
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
                 new ApiScope(IDentityConstants.AngularApiScope),
+                new ApiScope(IDentityConstants.SwaggerScope),
             };
 
 
@@ -86,7 +89,7 @@ namespace IdentityServer.IdentityServer4Configuration
                 new Client
                 {
 
-                        ClientId = IDentityConstants.MobileClientSecret,
+                        ClientId = IDentityConstants.MobileClientId,
                         ClientSecrets = { new Secret(IDentityConstants.MobileClientSecret.Sha256()) },
                         AllowOfflineAccess = true,
                         AccessTokenLifetime = IDentityConstants.TokenLifeTime,
@@ -132,6 +135,24 @@ namespace IdentityServer.IdentityServer4Configuration
                       RequireClientSecret = false,
                       PostLogoutRedirectUris =IDentityAppSettings.AngularClient_PostLogoutRedirectUris,
                       RequireConsent = false,
+                },
+                new Client
+                {
+                     ClientId = IDentityConstants.SwaggerClientId,
+                     ClientName = IDentityConstants.SwaggerClientName,
+                     AllowedGrantTypes = GrantTypes.Implicit,
+                     RequirePkce = true,
+                     ClientSecrets = { new Secret(IDentityConstants.SwaggerClientSecret.Sha256()) },
+                     AllowAccessTokensViaBrowser =true,
+                     RedirectUris = IDentityAppSettings.SwaggerRedirectUris,
+                     FrontChannelLogoutUri = IDentityAppSettings.SwaggerFrontChannelLogoutUri,
+                     PostLogoutRedirectUris = IDentityAppSettings.SwaggerPostLogoutRedirectUris,
+                     AllowOfflineAccess = true,
+                     AllowedScopes =
+                     {
+                        IDentityConstants.SwaggerScope,
+                        IdentityServerConstants.LocalApi.ScopeName
+                     }
                 },
 
             };

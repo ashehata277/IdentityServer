@@ -10,8 +10,6 @@ namespace IdentityServer.Helper
     {
         public static IServiceCollection AddServiers(this IServiceCollection services) 
         {
-            services.AddControllersWithViews();
-            services.AddMvc();
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
             return services;

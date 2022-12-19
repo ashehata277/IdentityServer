@@ -1,23 +1,14 @@
 ﻿using IdentityServer4;
-using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SharedData;
-using SharedData;
 using SharedLogic.IdentityServer;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityServer.IdentityServer4Configuration
 {
@@ -81,6 +72,7 @@ namespace IdentityServer.IdentityServer4Configuration
                .AddResourceOwnerValidator<ResourceOwnerValidator>()
                .AddProfileService<Profile>();
 
+            services.AddScoped<ISecurityStampTokenValidator, SecurityStampTokenValidator>();
 
 
             AddSigninCredenticals(services, configuration, env, builder);
@@ -173,7 +165,7 @@ namespace IdentityServer.IdentityServer4Configuration
 
         private static void ConfigureAuthorityOfIDSasClientCookieAndJWT(IServiceCollection services, IConfiguration configuration)
         {
-            var authorityOfMySelf = configuration.GetValue<string>("Authority");
+            var authorityOfMySelf = IDentityAppSettings.Authority;
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
              .AddCookie(options =>
@@ -190,7 +182,7 @@ namespace IdentityServer.IdentityServer4Configuration
                  options.TokenValidationParameters =
                  new TokenValidationParameters
                  {
-                     ValidAudiences = new List<string> 
+                     ValidAudiences = new List<string>
                      {
                          IdentityServerConstants.LocalApi.ScopeName
                      },
@@ -200,13 +192,18 @@ namespace IdentityServer.IdentityServer4Configuration
                      ValidateActor = false,
                      ValidateLifetime = true,
                      NameClaimType = IDentityConstants.NameClaim,
-                     RoleClaimType = IDentityConstants.RoleClaim
+                     RoleClaimType = IDentityConstants.RoleClaim,
                  };
                  options.Events = new JwtBearerEvents
                  {
-                     OnMessageReceived = context =>
+                     OnMessageReceived = async context =>
                      {
                          var accessToken = context.Request.Query["access_token"];
+
+
+                         var tokenValidator =
+                            context.HttpContext.RequestServices.GetRequiredService<ISecurityStampTokenValidator>();
+                         var ok = await tokenValidator.ValidateAsync();
 
                          var path = context.HttpContext.Request.Path;
                          if (!string.IsNullOrEmpty(accessToken) &&
@@ -214,7 +211,8 @@ namespace IdentityServer.IdentityServer4Configuration
                          {
                              context.Token = accessToken;
                          }
-                         return Task.CompletedTask;
+
+                         return;
                      }
                  };
              });
