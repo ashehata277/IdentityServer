@@ -72,6 +72,10 @@ namespace IdentityServer.IdentityServer4Configuration
             {
                 context.IsActive = user.EmailConfirmed;
             }
+            else if (context.Client.ClientId == IDentityConstants.SwaggerClientId)
+            {
+                context.IsActive = user.EmailConfirmed && user.PhoneNumberConfirmed;
+            }
         }
     }
 }
