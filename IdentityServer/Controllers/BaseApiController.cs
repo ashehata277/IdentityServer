@@ -28,10 +28,10 @@ namespace IdentityServer.Controllers
         {
             var problemDetail = new ProblemDetails
             {
-                Detail =error?? DefaultErrorMessage,
+                Detail =string.IsNullOrEmpty(error) ?  DefaultErrorMessage :  error,
                 Title= titleId,
                 Type = typeof(string).ToString(),
-                Instance = $"{_httpContextAccessor!.HttpContext!.Request.Scheme}://{_httpContextAccessor!.HttpContext!.Request.Host.Value}{_httpContextAccessor.HttpContext.Request.Path.Value}"
+                Instance = $"{_httpContextAccessor!.HttpContext!.Request.Scheme}://{_httpContextAccessor!.HttpContext!.Request.Host.Value}{_httpContextAccessor.HttpContext.Request.Path.Value}", 
             };
             return BadRequest(problemDetail);
         }

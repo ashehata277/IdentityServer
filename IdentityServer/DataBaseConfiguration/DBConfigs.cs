@@ -23,7 +23,7 @@ namespace IdentityServer.DataBaseConfiguration
 
         public static void MigrateContexts(this IApplicationBuilder app)
         {
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
             {
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<IdentityContext>().Database.Migrate();

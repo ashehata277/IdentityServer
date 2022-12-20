@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace SharedApplication.Users.GetUsers
 {
-    public record GetSystemUsersQuery : IRequest<MediatorValidationResult>
+    public record GetSystemUsersQuery : IRequest<IEnumerable<User>>, IValidationRequest
     {
-        public class GetSystemUsersQueryHandler : IRequestHandler<GetSystemUsersQuery, MediatorValidationResult>
+        public class GetSystemUsersQueryHandler : IRequestHandler<GetSystemUsersQuery, IEnumerable<User>>
         {
             private readonly IIDentityContext _iDentityContext;
 
@@ -21,10 +21,10 @@ namespace SharedApplication.Users.GetUsers
             {
                 this._iDentityContext = iDentityContext;
             }
-            public async ValueTask<MediatorValidationResult> Handle(GetSystemUsersQuery request, CancellationToken cancellationToken)
+            public async ValueTask<IEnumerable<User>> Handle(GetSystemUsersQuery request, CancellationToken cancellationToken)
             {
                 var allUsers = await _iDentityContext.User.ToListAsync();
-                return MediatorValidationResult.Success(allUsers);
+                return allUsers;
             }
         }
     }
