@@ -16,12 +16,10 @@ namespace IdentityServer.IdentityServer4Configuration
     public class Profile : IProfileService
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
 
-        public Profile(UserManager<User> userManager,RoleManager<Role> roleManager)
+        public Profile(UserManager<User> userManager)
         {
             this._userManager = userManager;
-            this._roleManager = roleManager;
         }
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
