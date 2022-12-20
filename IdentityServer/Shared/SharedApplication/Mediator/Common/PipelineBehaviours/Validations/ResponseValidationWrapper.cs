@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace SharedApplication.Mediator.Common.PipelineBehaviours.Validations
 {
-    public class ResponseValidationWrapper<T> : IValidationResponse
+    public class ResponseValidationWrapper<T> : IValidationResponse 
     {
         public string? ErrorMessage { get; set; } = null;
         public bool IsSuccess { get ; set ; }
         public T? Response{ get; set; }
 
-        public static ResponseValidationWrapper<Tresponse> Success<Tresponse>(Tresponse response) 
+        public static ResponseValidationWrapper<T> Success(T response) 
         {
-            return new ResponseValidationWrapper<Tresponse> { IsSuccess = true, Response = response };
+            return new ResponseValidationWrapper<T> { IsSuccess = true, Response = response };
         }
-        public static ResponseValidationWrapper<Tresponse> Fail<Tresponse>(string errorMessage)
+        public static ResponseValidationWrapper<T> Fail(string errorMessage)
         {
-            return new ResponseValidationWrapper<Tresponse> { IsSuccess = false, ErrorMessage = errorMessage};
+            return new ResponseValidationWrapper<T> { IsSuccess = false, ErrorMessage = errorMessage};
         }
-        public static ResponseValidationWrapper<Tresponse> Success<Tresponse>()
+        public static ResponseValidationWrapper<T> Success()
         {
-            return new ResponseValidationWrapper<Tresponse> { IsSuccess = false};
+            return new ResponseValidationWrapper<T> { IsSuccess = false};
         }
 
     }
