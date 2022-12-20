@@ -10,6 +10,6 @@ namespace SharedApplication.Mediator.Common.PipelineBehaviours.Validations
 
     public interface IValidationHandler<T> : IValidationHandler
     {
-        ValueTask<MediatorValidationResult> Validate(T request);
+        ValueTask<ValidationResult> Validate(T request);
     }
 }

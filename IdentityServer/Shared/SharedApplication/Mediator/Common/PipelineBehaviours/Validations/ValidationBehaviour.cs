@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SharedApplication.Mediator.Common.PipelineBehaviours.Validations
 {
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TResponse: MediatorValidationResult, new ()
+        where TResponse: IValidationResponse, new ()
         where TRequest : IValidationRequest
     {
         private readonly ILogger<ValidationBehaviour<TRequest, TResponse>> logger;

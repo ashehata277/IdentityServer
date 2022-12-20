@@ -17,12 +17,12 @@ namespace IdentityServer.Controllers
         [HttpGet]
         [Route("api/Users/All")]
         [ProducesDefaultResponseType]
-        [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AllUsers()
         {
             var userResult = await _mediator.Send(new GetSystemUsersQuery());
-            return Ok(userResult);
+            return Ok(userResult.Response);
         }
 
         [HttpPost]
