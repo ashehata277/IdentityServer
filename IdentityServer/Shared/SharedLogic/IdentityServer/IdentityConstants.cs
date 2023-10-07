@@ -14,7 +14,7 @@ namespace SharedLogic.IdentityServer
         public static readonly string ApiResource = "Api";
         public static readonly string MVCResource = "MVC";
         public static readonly string AdminUserName = "admin";
-        public static readonly string AdminPassword = "admin";
+        public static readonly string AdminPassword = "AdminPassword123$$";
         public static readonly string AdminUserId = "32efec81-d676-4e7a-b3c1-12984c515bf2";
         public static readonly string AdminRoleName = "admin";
         public static readonly string AdminRoleId = "8ce88938-6386-40ce-ab79-16306e3991a8";

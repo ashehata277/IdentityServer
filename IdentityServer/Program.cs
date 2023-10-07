@@ -1,9 +1,7 @@
 using Hellang.Middleware.ProblemDetails;
-using Hellang.Middleware.ProblemDetails.Mvc;
 using IdentityServer.DataBaseConfiguration;
 using IdentityServer.Helper;
 using IdentityServer.IdentityServer4Configuration;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Serilog;
 using SharedWeb.Helpers;
@@ -21,7 +19,7 @@ builder.WebHost.UseSerilog((provider, loggerConfig) =>
     }); 
 
 
-string AllowedOrigins = IDentityAppSettings.AllowCors;
+string allowedOrigins = IDentityAppSettings.AllowCors;
 IWebHostEnvironment env = builder.Environment;
 builder.Services
     .InitializeConfiguration(configuration)
@@ -30,7 +28,7 @@ builder.Services
     .AddIdentityServerV4(configuration, env)
     .AddServiers()
     .AddAuthSwagger()
-    .AddCORS(configuration, AllowedOrigins)
+    .AddCORS(configuration, allowedOrigins)
     .AddLocalization()
     .AddApiProblemDetails()
     .AddControllersWithViews()
@@ -46,7 +44,7 @@ if (!WindowsServiceHelpers.IsWindowsService())
     app.UseHttpsRedirection();
 app.UseAdminUser();
 app.UseStaticFiles();
-app.UseCors(AllowedOrigins);
+app.UseCors(allowedOrigins);
 app.UseLocalization();
 app.UseRouting();
 app.UseIdentityServer();

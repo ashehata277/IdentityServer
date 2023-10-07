@@ -22,9 +22,7 @@ namespace IdentityServer.Controllers
         public async Task<IActionResult> AllUsers()
         {
             var userResult = await _mediator.Send(new GetSystemUsersQuery());
-            if (userResult.IsSuccess) { return Ok(userResult.Response); }
-            else { return CreateProblemDetails(userResult.ErrorMessage); }
-
+            return CreateApiResponse(userResult);
         }
 
         [HttpPost]

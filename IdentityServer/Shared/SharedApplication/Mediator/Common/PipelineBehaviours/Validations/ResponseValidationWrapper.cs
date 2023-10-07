@@ -27,4 +27,20 @@ namespace SharedApplication.Mediator.Common.PipelineBehaviours.Validations
         }
 
     }
+    public class ResponseValidationWrapper : IValidationResponse 
+    {
+        public string? ErrorMessage { get; set; } = null;
+        public bool IsSuccess { get ; set ; }
+
+        public static ResponseValidationWrapper Success() 
+        {
+            return new ResponseValidationWrapper { IsSuccess = true };
+        }
+        public static ResponseValidationWrapper Fail(string errorMessage)
+        {
+            return new ResponseValidationWrapper { IsSuccess = false, ErrorMessage = errorMessage};
+        }
+       
+
+    }
 }

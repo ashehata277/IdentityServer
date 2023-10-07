@@ -46,7 +46,7 @@ namespace Talabatk.IDS.Controllers.Account
 
         public async Task<IActionResult> Login(string returnUrl)
         {
-            ModelState.Clear(); 
+            ModelState.Clear();
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
@@ -103,6 +103,8 @@ namespace Talabatk.IDS.Controllers.Account
                                                                            user.Id.ToString(),
                                                                            user.UserName,
                                                                            clientId: context?.Client.ClientId));
+
+
                         if (context != null)
                         {
                             if (context.IsNativeClient())
