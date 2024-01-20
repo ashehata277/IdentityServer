@@ -25,7 +25,9 @@ namespace IdentityServer.Controllers
                 Title = TitleId,
                 Type = typeof(string).ToString(),
                 Instance =
-                    $"{_httpContextAccessor!.HttpContext!.Request.Scheme}://{_httpContextAccessor!.HttpContext!.Request.Host.Value}{_httpContextAccessor.HttpContext.Request.Path.Value}",
+                    @$"{_httpContextAccessor!.HttpContext!.Request.Scheme}:
+                        //{_httpContextAccessor!.HttpContext!.Request.Host.Value}
+                          {_httpContextAccessor.HttpContext.Request.Path.Value}",
             };
             return BadRequest(problemDetail);
         }
@@ -35,7 +37,7 @@ namespace IdentityServer.Controllers
             if (resultCqrs.IsSuccess) return Ok(resultCqrs.Response);
             else return CreateProblemDetails(resultCqrs.ErrorMessage);
         }
-        
+
         protected IActionResult CreateApiResponse(ResponseValidationWrapper resultCqrs)
         {
             if (resultCqrs.IsSuccess) return Ok();
