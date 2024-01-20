@@ -8,7 +8,7 @@ namespace IdentityServer.Helper
 {
     public static class Services
     {
-        public static IServiceCollection AddServiers(this IServiceCollection services) 
+        public static IServiceCollection AddServices(this IServiceCollection services) 
         {
             services.AddRazorPages().AddRazorRuntimeCompilation();
 

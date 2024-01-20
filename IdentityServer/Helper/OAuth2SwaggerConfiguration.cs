@@ -24,12 +24,12 @@ namespace IdentityServer.Helper
                         {
                             Scopes = new Dictionary<string, string>
                             {
-                                { IDentityConstants.SwaggerScope,IDentityConstants.SwaggerScope},
+                                { IdentityConstants.SwaggerScope,IdentityConstants.SwaggerScope},
                                 { IdentityServerConstants.LocalApi.ScopeName,IdentityServerConstants.LocalApi.ScopeName},
 
                             },
-                            AuthorizationUrl = $"{IDentityAppSettings.Authority}/connect/authorize",
-                            TokenUrl = $"{IDentityAppSettings.Authority}/core/connect/token"
+                            AuthorizationUrl = $"{IdentityAppSettings.Authority}/connect/authorize",
+                            TokenUrl = $"{IdentityAppSettings.Authority}/core/connect/token"
                         },
                     }
 

@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using SharedApplication.ContextInterfaces;
 using SharedData;
+using SharedData.SharedContext;
 
 namespace IdentityServer.DataBaseConfiguration
 {
-    public static class DBConfigs
+    public static class DbConfigs
     {
-        public static IServiceCollection AddIDentityDataBaseConfiguration(this IServiceCollection services,
+        public static IServiceCollection AddIdentityDataBaseConfiguration(this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddDbContext<IdentityContext>(options =>
@@ -23,12 +24,9 @@ namespace IdentityServer.DataBaseConfiguration
 
         public static void MigrateContexts(this IApplicationBuilder app)
         {
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
-            {
-                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetRequiredService<IdentityContext>().Database.Migrate();
-
-            }
+            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
+            serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+            serviceScope.ServiceProvider.GetRequiredService<IdentityContext>().Database.Migrate();
         }
     }
 }

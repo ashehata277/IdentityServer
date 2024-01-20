@@ -1,7 +1,7 @@
-﻿using IdentityServer.Helper.TaskExtension;
-using IdentityServer4.Models;
+﻿using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
 using SharedLogic.IdentityServer;
+using IdentityConstants = SharedLogic.IdentityServer.IdentityConstants;
 
 namespace IdentityServer.IdentityServer4Configuration
 {
@@ -13,31 +13,31 @@ namespace IdentityServer.IdentityServer4Configuration
             var userManager = serviceScope?.ServiceProvider.GetService<UserManager<User>>();
             var roleManager = serviceScope?.ServiceProvider.GetService<RoleManager<Role>>();
             if (userManager != null && roleManager != null
-                                    && !userManager.Users.Any(x => x.UserName == IDentityConstants.AdminUserName))
+                                    && !userManager.Users.Any(x => x.UserName == IdentityConstants.AdminUserName))
             {
                 var adminUser = new User
                 {
-                    Id = IDentityConstants.AdminUserId,
-                    UserName = IDentityConstants.AdminUserName,
+                    Id = IdentityConstants.AdminUserId,
+                    UserName = IdentityConstants.AdminUserName,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
-                    PhoneNumber = IDentityConstants.AdminPhoneNumber,
-                    Email = IDentityConstants.AdminPhoneEmail,
-                    NormalizedUserName = IDentityConstants.AdminUserName.ToUpper(),
-                    NormalizedEmail = IDentityConstants.AdminPhoneEmail.ToUpper(),
+                    PhoneNumber = IdentityConstants.AdminPhoneNumber,
+                    Email = IdentityConstants.AdminPhoneEmail,
+                    NormalizedUserName = IdentityConstants.AdminUserName.ToUpper(),
+                    NormalizedEmail = IdentityConstants.AdminPhoneEmail.ToUpper(),
                 };
                 var adminRole = new Role
                 {
-                    Id = IDentityConstants.AdminRoleId,
-                    Name = IDentityConstants.AdminRoleName,
-                    NormalizedName = IDentityConstants.AdminRoleName.ToUpper(),
+                    Id = IdentityConstants.AdminRoleId,
+                    Name = IdentityConstants.AdminRoleName,
+                    NormalizedName = IdentityConstants.AdminRoleName.ToUpper(),
                 };
 
-                var userResult = userManager.CreateAsync(adminUser, IDentityConstants.AdminPassword).GetAwaiter().GetResult();
+                var userResult = userManager.CreateAsync(adminUser, IdentityConstants.AdminPassword).GetAwaiter().GetResult();
                 if (!userResult.Succeeded) return;
                 var roleResult = roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
                 if (!roleResult.Succeeded) return;
-                var userRoleResult = userManager.AddToRoleAsync(adminUser, IDentityConstants.AdminRoleName).GetAwaiter().GetResult();
+                var userRoleResult = userManager.AddToRoleAsync(adminUser, IdentityConstants.AdminRoleName).GetAwaiter().GetResult();
             }
         }
     }

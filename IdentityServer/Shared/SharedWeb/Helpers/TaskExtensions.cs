@@ -1,5 +1,5 @@
 
-namespace IdentityServer.Helper.TaskExtension
+namespace SharedWeb.Helpers
 {
     public static class TaskExtensions
     {
@@ -11,15 +11,14 @@ namespace IdentityServer.Helper.TaskExtension
             }
             catch (Exception)
             {
-
-
+                // ignored
             }
         }
-        public static async Task<T> Await<T>(this Task<T> task)
+        public static async Task<T?> Await<T>(this Task<T> task)
         {
             try
             {
-                T? res = default(T);
+                T? res;
                 res = await task;
                 return res;
             }
@@ -33,7 +32,7 @@ namespace IdentityServer.Helper.TaskExtension
         {
             try
             {
-                T? res = default(T);
+                T? res;
                 res = await task;
                successCallBack(res);
             }

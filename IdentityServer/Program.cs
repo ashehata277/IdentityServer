@@ -19,16 +19,17 @@ builder.WebHost.UseSerilog((provider, loggerConfig) =>
     }); 
 
 
-string allowedOrigins = IDentityAppSettings.AllowCors;
+string allowedOrigins = IdentityAppSettings.AllowCors;
 IWebHostEnvironment env = builder.Environment;
 builder.Services
     .InitializeConfiguration(configuration)
     .AddMediatorSourceGenerator()
-    .AddIDentityDataBaseConfiguration(configuration)
+    .AddIdentityDataBaseConfiguration(configuration)
     .AddIdentityServerV4(configuration, env)
-    .AddServiers()
+    .AddAuthorizationHandlers()
+    .AddServices()
     .AddAuthSwagger()
-    .AddCORS(configuration, allowedOrigins)
+    .AddC_O_R_S(configuration, allowedOrigins)
     .AddLocalization()
     .AddApiProblemDetails()
     .AddControllersWithViews()

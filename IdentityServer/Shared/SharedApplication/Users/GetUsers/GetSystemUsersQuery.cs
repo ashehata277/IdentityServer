@@ -3,11 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using SharedApplication.ContextInterfaces;
 using SharedApplication.Mediator.Common.PipelineBehaviours.Validations;
 using SharedLogic.IdentityServer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharedApplication.Users.GetUsers
 {
@@ -15,15 +10,15 @@ namespace SharedApplication.Users.GetUsers
     {
         public class GetSystemUsersQueryHandler : IRequestHandler<GetSystemUsersQuery, ResponseValidationWrapper<List<User>>>
         {
-            private readonly IIDentityContext _iDentityContext;
+            private readonly IIDentityContext _identityContext;
 
-            public GetSystemUsersQueryHandler(IIDentityContext iDentityContext)
+            public GetSystemUsersQueryHandler(IIDentityContext identityContext)
             {
-                this._iDentityContext = iDentityContext;
+                this._identityContext = identityContext;
             }
             public async ValueTask<ResponseValidationWrapper<List<User>>> Handle(GetSystemUsersQuery request, CancellationToken cancellationToken)
             {
-                var allUsers = await _iDentityContext.User.ToListAsync();
+                var allUsers = await _identityContext.User.ToListAsync(cancellationToken: cancellationToken);
                 return ResponseValidationWrapper<List<User>>.Success(allUsers);
             }
         }

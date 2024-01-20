@@ -9,12 +9,13 @@ using SharedLogic.IdentityServer;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using SharedData.SharedContext;
+using IdentityConstants = SharedLogic.IdentityServer.IdentityConstants;
 
 namespace IdentityServer.IdentityServer4Configuration
 {
     public static class IdentityServices
     {
-        [Obsolete("Obsolete")]
         public static IServiceCollection AddIdentityServerV4(this IServiceCollection services,
             IConfiguration configuration,
             IWebHostEnvironment env)
@@ -66,7 +67,7 @@ namespace IdentityServer.IdentityServer4Configuration
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                     options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = IDentityConstants.TokenCleanupInterval;
+                    options.TokenCleanupInterval = IdentityConstants.TokenCleanupInterval;
                 })
                 .AddAspNetIdentity<User>()
                 .AddResourceOwnerValidator<ResourceOwnerValidator>()
@@ -85,7 +86,6 @@ namespace IdentityServer.IdentityServer4Configuration
             return services;
         }
 
-        [Obsolete("Obsolete")]
         private static void AddSigninCredentials(
             IServiceCollection services,
             IConfiguration configuration,
@@ -165,7 +165,7 @@ namespace IdentityServer.IdentityServer4Configuration
 
         private static void ConfigureAuthorityOfIdsAsClientCookieAndJwt(IServiceCollection services)
         {
-            var authorityOfMySelf = IDentityAppSettings.Authority;
+            var authorityOfMySelf = IdentityAppSettings.Authority;
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options => { options.SlidingExpiration = true; })
@@ -187,8 +187,8 @@ namespace IdentityServer.IdentityServer4Configuration
                             ValidateIssuer = true,
                             ValidateActor = false,
                             ValidateLifetime = true,
-                            NameClaimType = IDentityConstants.NameClaim,
-                            RoleClaimType = IDentityConstants.RoleClaim,
+                            NameClaimType = IdentityConstants.NameClaim,
+                            RoleClaimType = IdentityConstants.RoleClaim,
                         };
                     options.Events = new JwtBearerEvents
                     {

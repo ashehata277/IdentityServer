@@ -1,10 +1,7 @@
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using SharedWeb.Helpers;
-using System;
 
-namespace IdentityServer.Helper;
+namespace SharedWeb.Helpers;
 public static class ProblemDetailsConfig
 {
     public static IServiceCollection AddApiProblemDetails(this IServiceCollection services) 

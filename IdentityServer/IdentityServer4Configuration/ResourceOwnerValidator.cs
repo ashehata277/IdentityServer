@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using SharedLogic.IdentityServer;
 using SharedLogic.Resources;
 using System.Security.Claims;
+using IdentityConstants = SharedLogic.IdentityServer.IdentityConstants;
 
 namespace IdentityServer.IdentityServer4Configuration
 {
@@ -19,15 +20,15 @@ namespace IdentityServer.IdentityServer4Configuration
         {
 
             var userName = context.UserName;
-            Maybe<User> mayebeUser = await _userManager.FindByNameAsync(userName);
-            if (mayebeUser.HasNoValue)
+            Maybe<User> maybeUser = await _userManager.FindByNameAsync(userName);
+            if (maybeUser.HasNoValue)
             {
                 context.Result.Error = StatusCodes.Status404NotFound.ToString();
                 context.Result.ErrorDescription = SharedResource.UserNotFound;
                 context.Result.IsError = true;
                 return;
             }
-            var user = mayebeUser.Value;
+            var user = maybeUser.Value;
             if (!(await _userManager.CheckPasswordAsync(user, context.Password)))
             {
                 context.Result.Error = StatusCodes.Status401Unauthorized.ToString();
@@ -45,16 +46,16 @@ namespace IdentityServer.IdentityServer4Configuration
             }
             Dictionary<string, Object> additionalInfo = new Dictionary<string, object>();
 
-            additionalInfo.Add(IDentityConstants.TokenInfo_Name, user.UserName);
+            additionalInfo.Add(IdentityConstants.TokenInfo_Name, user.UserName);
 
             context.Result = new GrantValidationResult(
                              subject: user.Id.ToString(),
-                             authenticationMethod: IDentityConstants.TokenInfo_AuthenticationMethod,
+                             authenticationMethod: IdentityConstants.TokenInfo_AuthenticationMethod,
                              claims: new Claim[]
                              {
                                      new Claim(ClaimTypes.NameIdentifier, context.UserName)
                              },
-                             identityProvider: IDentityConstants.TokenInfo_IdentityProvider,
+                             identityProvider: IdentityConstants.TokenInfo_IdentityProvider,
                              additionalInfo);
 
 

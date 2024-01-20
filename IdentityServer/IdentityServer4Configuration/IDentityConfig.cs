@@ -19,8 +19,8 @@ namespace IdentityServer.IdentityServer4Configuration
            {
                 new ApiResource
                 {
-                    Name =IDentityConstants.ApiResource,
-                    DisplayName = IDentityConstants.ApiResource,
+                    Name =IdentityConstants.ApiResource,
+                    DisplayName = IdentityConstants.ApiResource,
                      UserClaims =
                      {
                         JwtClaimTypes.Name,
@@ -40,16 +40,16 @@ namespace IdentityServer.IdentityServer4Configuration
                     {
                           IdentityServerConstants.StandardScopes.OpenId,
                           IdentityServerConstants.LocalApi.ScopeName,
-                          IDentityConstants.AngularApiScope,
-                          IDentityConstants.SwaggerScope
+                          IdentityConstants.AngularApiScope,
+                          IdentityConstants.SwaggerScope
 
                     },
-                    ApiSecrets = new List<Secret>(){new Secret(IDentityConstants.ApiResourceSecret.Sha256()) },
+                    ApiSecrets = new List<Secret>(){new Secret(IdentityConstants.ApiResourceSecret.Sha256()) },
                 },
                  new ApiResource
                  {
-                    Name = IDentityConstants.MVCResource,
-                    DisplayName = IDentityConstants.MVCResource,
+                    Name = IdentityConstants.MVCResource,
+                    DisplayName = IdentityConstants.MVCResource,
                      UserClaims =
                      {
                          JwtClaimTypes.Name,
@@ -69,7 +69,7 @@ namespace IdentityServer.IdentityServer4Configuration
                     {
                         IdentityServerConstants.StandardScopes.OpenId
                     },
-                    ApiSecrets = new List<Secret>(){new Secret(IDentityConstants.MVCResourceSecret.Sha256()) },
+                    ApiSecrets = new List<Secret>(){new Secret(IdentityConstants.MVCResourceSecret.Sha256()) },
                  }
 
            };
@@ -78,8 +78,8 @@ namespace IdentityServer.IdentityServer4Configuration
             new List<ApiScope>()
             {
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
-                new ApiScope(IDentityConstants.AngularApiScope),
-                new ApiScope(IDentityConstants.SwaggerScope),
+                new ApiScope(IdentityConstants.AngularApiScope),
+                new ApiScope(IdentityConstants.SwaggerScope),
             };
 
 
@@ -89,14 +89,14 @@ namespace IdentityServer.IdentityServer4Configuration
                 new Client
                 {
 
-                        ClientId = IDentityConstants.MobileClientId,
-                        ClientSecrets = { new Secret(IDentityConstants.MobileClientSecret.Sha256()) },
+                        ClientId = IdentityConstants.MobileClientId,
+                        ClientSecrets = { new Secret(IdentityConstants.MobileClientSecret.Sha256()) },
                         AllowOfflineAccess = true,
-                        AccessTokenLifetime = IDentityConstants.TokenLifeTime,
+                        AccessTokenLifetime = IdentityConstants.TokenLifeTime,
                         UpdateAccessTokenClaimsOnRefresh =true,
                         AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                         RefreshTokenExpiration = TokenExpiration.Absolute,
-                        AbsoluteRefreshTokenLifetime =  IDentityConstants.RefreshTokenLifeTime,
+                        AbsoluteRefreshTokenLifetime =  IdentityConstants.RefreshTokenLifeTime,
                         AllowedScopes =
                         {
                             IdentityServerConstants.LocalApi.ScopeName,
@@ -109,48 +109,48 @@ namespace IdentityServer.IdentityServer4Configuration
                 },
                 new Client
                 {
-                      ClientId = IDentityConstants.AngularClientId,
-                      ClientName = IDentityConstants.AngularClientName,
-                      ClientSecrets = { new Secret(IDentityConstants.AngularClientSecret.Sha256()) },
+                      ClientId = IdentityConstants.AngularClientId,
+                      ClientName = IdentityConstants.AngularClientName,
+                      ClientSecrets = { new Secret(IdentityConstants.AngularClientSecret.Sha256()) },
                       AllowOfflineAccess = true,
-                      AccessTokenLifetime = IDentityConstants.TokenLifeTime,
+                      AccessTokenLifetime = IdentityConstants.TokenLifeTime,
                       UpdateAccessTokenClaimsOnRefresh =true,
                       AllowedGrantTypes = GrantTypes.Code,
                       RefreshTokenExpiration = TokenExpiration.Absolute,
-                      AbsoluteRefreshTokenLifetime =  IDentityConstants.RefreshTokenLifeTime ,
+                      AbsoluteRefreshTokenLifetime =  IdentityConstants.RefreshTokenLifeTime ,
                       AllowedScopes =
                       {
                           IdentityServerConstants.LocalApi.ScopeName,
                           IdentityServerConstants.StandardScopes.OpenId,
                           IdentityServerConstants.StandardScopes.Profile,
-                          IDentityConstants.AngularApiScope,
+                          IdentityConstants.AngularApiScope,
                           IdentityServerConstants.StandardScopes.OfflineAccess,
 
                       },
                       RefreshTokenUsage= TokenUsage.OneTimeOnly,
-                      RedirectUris = IDentityAppSettings.AngularClient_RedirectUris,
+                      RedirectUris = IdentityAppSettings.AngularClientRedirectUris,
                       RequirePkce = true,
                       AllowAccessTokensViaBrowser = true,
-                      AllowedCorsOrigins = IDentityAppSettings.AngularClient_CORS,
+                      AllowedCorsOrigins = IdentityAppSettings.AngularClientCors,
                       RequireClientSecret = false,
-                      PostLogoutRedirectUris =IDentityAppSettings.AngularClient_PostLogoutRedirectUris,
+                      PostLogoutRedirectUris =IdentityAppSettings.AngularClientPostLogoutRedirectUris,
                       RequireConsent = false,
                 },
                 new Client
                 {
-                     ClientId = IDentityConstants.SwaggerClientId,
-                     ClientName = IDentityConstants.SwaggerClientName,
+                     ClientId = IdentityConstants.SwaggerClientId,
+                     ClientName = IdentityConstants.SwaggerClientName,
                      AllowedGrantTypes = GrantTypes.Implicit,
                      RequirePkce = true,
-                     ClientSecrets = { new Secret(IDentityConstants.SwaggerClientSecret.Sha256()) },
+                     ClientSecrets = { new Secret(IdentityConstants.SwaggerClientSecret.Sha256()) },
                      AllowAccessTokensViaBrowser =true,
-                     RedirectUris = IDentityAppSettings.SwaggerRedirectUris,
-                     FrontChannelLogoutUri = IDentityAppSettings.SwaggerFrontChannelLogoutUri,
-                     PostLogoutRedirectUris = IDentityAppSettings.SwaggerPostLogoutRedirectUris,
+                     RedirectUris = IdentityAppSettings.SwaggerRedirectUris,
+                     FrontChannelLogoutUri = IdentityAppSettings.SwaggerFrontChannelLogoutUri,
+                     PostLogoutRedirectUris = IdentityAppSettings.SwaggerPostLogoutRedirectUris,
                      AllowOfflineAccess = true,
                      AllowedScopes =
                      {
-                        IDentityConstants.SwaggerScope,
+                        IdentityConstants.SwaggerScope,
                         IdentityServerConstants.LocalApi.ScopeName
                      }
                 },

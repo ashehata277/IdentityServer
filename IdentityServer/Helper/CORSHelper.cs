@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace IdentityServer.Helper
 {
-    public static class CORSHelper
+    public static class CorsHelper
     {
-        public static IServiceCollection AddCORS(this IServiceCollection services, IConfiguration configuration,string AllowedOrigin) 
+        public static IServiceCollection AddC_O_R_S(this IServiceCollection services, IConfiguration configuration,string allowedOrigin) 
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(name: AllowedOrigin,
+                options.AddPolicy(name: allowedOrigin,
                     builder =>
                     {
                         builder.WithOrigins(configuration.GetValue<string>("CORS").Split(";"))

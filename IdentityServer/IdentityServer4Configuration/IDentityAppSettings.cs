@@ -2,17 +2,17 @@
 
 namespace IdentityServer.IdentityServer4Configuration
 {
-    public class IDentityAppSettings
+    public abstract class IdentityAppSettings
     {
 
         public static string AllowCors => "ClientAllowed";
 
         //--------------Angular Client URLS----------------------------
-        public static ICollection<string> AngularClient_RedirectUris =>
+        public static ICollection<string> AngularClientRedirectUris =>
             ConfigurationHelper.StaticConfigurations.GetValue<string>("Angular:RedirectUris").Split(",");
-        public static ICollection<string> AngularClient_CORS =>
+        public static ICollection<string> AngularClientCors =>
             ConfigurationHelper.StaticConfigurations.GetValue<string>("Angular:CORS").Split(",");
-        public static ICollection<string> AngularClient_PostLogoutRedirectUris =>
+        public static ICollection<string> AngularClientPostLogoutRedirectUris =>
             ConfigurationHelper.StaticConfigurations.GetValue<string>("Angular:PostLogoutRedirectUris").Split(",");
         //------------------------------swagger -------------------------------------------------
         public static string Authority =>

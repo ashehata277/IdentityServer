@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharedLogic.IdentityServer
 {
-    public class IDentityConstants
+    public class IdentityConstants
     {
         public static readonly int TokenLifeTime = 3600;
         public static readonly int RefreshTokenLifeTime = 2592000;
