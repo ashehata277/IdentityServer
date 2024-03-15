@@ -6,7 +6,10 @@ public static class ProblemDetailsConfig
 {
     public static IServiceCollection AddApiProblemDetails(this IServiceCollection services) 
     {
-        services.AddProblemDetails();
+        services.AddProblemDetails(options =>
+        {
+            
+        });
 
         return services;
     }

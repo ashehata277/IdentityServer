@@ -28,6 +28,10 @@ namespace IdentityServer.Controllers
                     @$"{_httpContextAccessor!.HttpContext!.Request.Scheme}:
                         //{_httpContextAccessor!.HttpContext!.Request.Host.Value}
                           {_httpContextAccessor.HttpContext.Request.Path.Value}",
+                Extensions =
+                {
+                    
+                }
             };
             return BadRequest(problemDetail);
         }
