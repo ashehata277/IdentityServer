@@ -17,7 +17,7 @@ namespace SharedData.SharedContext
             UserRole,
             UserLogin,
             RoleClaim,
-            UserToken>, IDisposable, IIDentityContext
+            UserToken>, IIdentityContext
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;

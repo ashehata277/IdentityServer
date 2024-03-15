@@ -17,7 +17,7 @@ namespace IdentityServer.DataBaseConfiguration
                 options.UseSqlServer(configuration.GetConnectionString("Default"))
                        .EnableSensitiveDataLogging();
             });
-            services.AddScoped<IIDentityContext, IdentityContext>();
+            services.AddScoped<IIdentityContext, IdentityContext>();
             return services;
         }
 

@@ -10,9 +10,9 @@ namespace SharedApplication.Users.GetUsers
     {
         public class GetSystemUsersQueryHandler : IRequestHandler<GetSystemUsersQuery, ResponseValidationWrapper<List<User>>>
         {
-            private readonly IIDentityContext _identityContext;
+            private readonly IIdentityContext _identityContext;
 
-            public GetSystemUsersQueryHandler(IIDentityContext identityContext)
+            public GetSystemUsersQueryHandler(IIdentityContext identityContext)
             {
                 this._identityContext = identityContext;
             }

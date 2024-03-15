@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SharedApplication.ContextInterfaces
 {
-    public interface IIDentityContext
+    public interface IIdentityContext
     {
         public DbSet<User> User { get;}
     }
