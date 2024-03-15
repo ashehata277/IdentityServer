@@ -8,7 +8,7 @@ namespace SharedWeb.Helpers
         public static void UseAuthSwagger(this WebApplication app)
         {
             app.UseOpenApi();
-            app.UseSwaggerUi3(settings =>
+            app.UseSwaggerUi(settings =>
             {
                 settings.OAuth2Client = new OAuth2ClientSettings
                 {

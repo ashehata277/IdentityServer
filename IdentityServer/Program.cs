@@ -1,4 +1,3 @@
-using Hellang.Middleware.ProblemDetails;
 using IdentityServer.DataBaseConfiguration;
 using IdentityServer.Helper;
 using IdentityServer.IdentityServer4Configuration;
@@ -39,7 +38,6 @@ builder.Services
 var app = builder.Build();
 
 app.MigrateContexts();
-app.UseProblemDetails();
 app.UseAuthSwagger();
 if (!WindowsServiceHelpers.IsWindowsService())
     app.UseHttpsRedirection();

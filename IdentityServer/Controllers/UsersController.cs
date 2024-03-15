@@ -9,7 +9,7 @@ namespace IdentityServer.Controllers
     {
         private readonly IMediator _mediator;
 
-        public UsersController(IMediator mediator, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public UsersController(IMediator mediator, IHttpContextAccessor httpContextAccessor) : base()
         {
             this._mediator = mediator;
         }

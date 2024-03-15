@@ -8,32 +8,22 @@ namespace IdentityServer.Controllers
     [Authorize]
     public class BaseApiController : Controller
     {
-        public BaseApiController(IHttpContextAccessor httpContextAccessor)
+        public BaseApiController()
         {
-            this._httpContextAccessor = httpContextAccessor;
         }
 
         private const string TitleId = "Api Error";
         private const string DefaultErrorMessage = "undefined Error";
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         protected BadRequestObjectResult CreateProblemDetails(string? error)
         {
-            var problemDetail = new ProblemDetails
-            {
-                Detail = string.IsNullOrEmpty(error) ? DefaultErrorMessage : error,
-                Title = TitleId,
-                Type = typeof(string).ToString(),
-                Instance =
-                    @$"{_httpContextAccessor!.HttpContext!.Request.Scheme}:
-                        //{_httpContextAccessor!.HttpContext!.Request.Host.Value}
-                          {_httpContextAccessor.HttpContext.Request.Path.Value}",
-                Extensions =
+            var problemDetails = Results.Problem(statusCode: StatusCodes.Status400BadRequest,
+                detail: error,
+                extensions: new Dictionary<string, object?>()
                 {
-                    
-                }
-            };
-            return BadRequest(problemDetail);
+
+                });
+            return BadRequest(problemDetails);
         }
 
         protected IActionResult CreateApiResponse<T>(ResponseValidationWrapper<T> resultCqrs)

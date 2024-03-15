@@ -1,4 +1,3 @@
-using Hellang.Middleware.ProblemDetails;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedWeb.Helpers;
@@ -8,7 +7,12 @@ public static class ProblemDetailsConfig
     {
         services.AddProblemDetails(options =>
         {
-            
+            options.CustomizeProblemDetails = (context) =>
+            {
+
+                context.ProblemDetails.Extensions["ServerVersion"] = "asdasdas";
+                context.ProblemDetails.Extensions["ClientVersion"] = "asdasdas";
+            };
         });
 
         return services;

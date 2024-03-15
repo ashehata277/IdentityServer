@@ -37,7 +37,6 @@ namespace IdentityServer.Helper
 
                 document.OperationProcessors.Add(
                 new AspNetCoreOperationSecurityScopeProcessor("bearer"));
-                document.AllowReferencesWithProperties = true;
             });
             return services;
         }
