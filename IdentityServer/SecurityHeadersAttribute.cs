@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Talabatk.IDS.Controllers
+namespace IdentityServer
 {
     public class SecurityHeadersAttribute : ActionFilterAttribute
     {

@@ -10,9 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SharedLogic.IdentityServer;
+using Talabatk.IDS.Controllers;
 using Talabatk.IDS.ViewModels;
 
-namespace Talabatk.IDS.Controllers.Account
+namespace IdentityServer.Controllers.Account
 {
     [SecurityHeaders]
     [AllowAnonymous]
@@ -100,7 +101,7 @@ namespace Talabatk.IDS.Controllers.Account
                     {
                         var user = await _userManager.FindByNameAsync(model.Username);
                         await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName,
-                                                                           user.Id.ToString(),
+                                                                           user.Id,
                                                                            user.UserName,
                                                                            clientId: context?.Client.ClientId));
 
@@ -183,7 +184,7 @@ namespace Talabatk.IDS.Controllers.Account
             // build a model so the logged out page knows what to display
             var vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
 
-            if (User?.Identity.IsAuthenticated == true)
+            if (User.Identity?.IsAuthenticated == true)
             {
                 // delete local authentication cookie
                 await _signInManager.SignOutAsync();
@@ -198,7 +199,7 @@ namespace Talabatk.IDS.Controllers.Account
                 // build a return URL so the upstream provider will redirect back
                 // to us after the user has logged out. this allows us to then
                 // complete our single sign-out processing.
-                string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
+                string? url = Url.Action("Logout", new { logoutId = vm.LogoutId });
 
                 // this triggers a redirect to the external provider for sign-out
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
@@ -229,7 +230,7 @@ namespace Talabatk.IDS.Controllers.Account
                 {
                     EnableLocalLogin = local,
                     ReturnUrl = returnUrl,
-                    Username = context?.LoginHint,
+                    Username = context.LoginHint,
                 };
 
                 if (!local)
@@ -277,7 +278,7 @@ namespace Talabatk.IDS.Controllers.Account
 
         private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
         {
-            var vm = await BuildLoginViewModelAsync(model.ReturnUrl);
+            var vm = await BuildLoginViewModelAsync(model.ReturnUrl!);
             vm.Username = model.Username;
             vm.RememberLogin = model.RememberLogin;
             return vm;
@@ -287,7 +288,7 @@ namespace Talabatk.IDS.Controllers.Account
         {
             var vm = new LogoutViewModel { LogoutId = logoutId, ShowLogoutPrompt = false };
 
-            if (User?.Identity.IsAuthenticated != true)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 // if the user is not authenticated, then just show logged out page
                 vm.ShowLogoutPrompt = false;
@@ -314,35 +315,27 @@ namespace Talabatk.IDS.Controllers.Account
             var logout = await _interaction.GetLogoutContextAsync(logoutId);
 
 
-            var postulr = IDentityConfig.ApiClients.FirstOrDefault(x => x.ClientId.Equals(logout?.ClientIds?.FirstOrDefault()))?.PostLogoutRedirectUris.FirstOrDefault();
+            var postUrl = IDentityConfig.ApiClients.FirstOrDefault(x => x.ClientId.Equals(logout?.ClientIds?.FirstOrDefault()))?.PostLogoutRedirectUris.FirstOrDefault();
 
             var vm = new LoggedOutViewModel
             {
                 AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
-                PostLogoutRedirectUri = postulr ?? "/",
-                ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
+                PostLogoutRedirectUri = postUrl ?? "/",
+                ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout.ClientName,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId
             };
 
 
 
-            if (User?.Identity.IsAuthenticated == true)
+            if (User.Identity?.IsAuthenticated == true)
             {
                 var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
                 if (idp != null && idp != IdentityServer4.IdentityServerConstants.LocalIdentityProvider)
                 {
-                    var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
-                    if (providerSupportsSignout)
+                    var providerSupportsSignOut = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
+                    if (providerSupportsSignOut)
                     {
-                        if (vm.LogoutId == null)
-                        {
-                            // if there's no current logout context, we need to create one
-                            // this captures necessary info from the current logged in user
-                            // before we signout and redirect away to the external IdP for signout
-                            vm.LogoutId = await _interaction.CreateLogoutContextAsync();
-                        }
-
                         vm.ExternalAuthenticationScheme = idp;
                     }
                 }

@@ -1,13 +1,9 @@
 ﻿using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using Talabatk.IDS.ViewModels;
 
-namespace Talabatk.IDS.Controllers.Account
+namespace IdentityServer.Controllers.Account
 {
     [SecurityHeaders]
     [AllowAnonymous]
@@ -16,7 +12,7 @@ namespace Talabatk.IDS.Controllers.Account
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger _logger;
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         public HomeController(IIdentityServerInteractionService interaction,
                               IWebHostEnvironment environment,
@@ -26,7 +22,7 @@ namespace Talabatk.IDS.Controllers.Account
             _interaction = interaction;
             _environment = environment;
             _logger = logger;
-            this.configuration = configuration;
+            this._configuration = configuration;
         }
 
         public IActionResult Index()
@@ -64,7 +60,7 @@ namespace Talabatk.IDS.Controllers.Account
         }
         public IActionResult RedirectToadmin()
         {
-            string domainurl = configuration.GetValue<string>("Old")+"/admin";
+            string domainurl = _configuration.GetValue<string>("Old")+"/admin";
             return Redirect(domainurl);
         }
     }

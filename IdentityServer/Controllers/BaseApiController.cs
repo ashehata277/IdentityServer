@@ -35,7 +35,7 @@ namespace IdentityServer.Controllers
         protected IActionResult CreateApiResponse<T>(ResponseValidationWrapper<T> resultCqrs)
         {
             if (resultCqrs.IsSuccess) return Ok(resultCqrs.Response);
-            else return CreateProblemDetails(resultCqrs.ErrorMessage);
+            return CreateProblemDetails(resultCqrs.ErrorMessage);
         }
 
         protected IActionResult CreateApiResponse(ResponseValidationWrapper resultCqrs)
