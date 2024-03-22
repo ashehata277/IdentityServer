@@ -6,7 +6,7 @@ using Serilog;
 using SharedWeb.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//develop
 ConfigurationManager configuration = builder.Configuration;
 builder.WebHost.UseSerilog((provider, loggerConfig) =>
     {
@@ -33,6 +33,8 @@ builder.Services
     .AddApiProblemDetails()
     .AddControllersWithViews()
     .AddNewtonsoftJson();
+
+
 
 
 var app = builder.Build();
